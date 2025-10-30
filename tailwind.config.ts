@@ -65,7 +65,9 @@ export default {
 			},
 			fontFamily: {
 				sans: ['Roboto', 'sans-serif'],
-				heading: ['Montserrat', 'sans-serif']
+				heading: ['Bangers', 'cursive'],
+				anime: ['Passion One', 'cursive'],
+				bold: ['Alfa Slab One', 'cursive']
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

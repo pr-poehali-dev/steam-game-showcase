@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
@@ -88,6 +88,32 @@ const Index = () => {
   const [selectedGame, setSelectedGame] = useState<Game | null>(null);
   const [explodingGame, setExplodingGame] = useState<number | null>(null);
   const [particles, setParticles] = useState<{ id: string; x: number; y: number; tx: number; ty: number }[]>([]);
+  const [isMusicPlaying, setIsMusicPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    audioRef.current = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
+    audioRef.current.loop = true;
+    audioRef.current.volume = 0.3;
+    
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+    };
+  }, []);
+
+  const toggleMusic = () => {
+    if (audioRef.current) {
+      if (isMusicPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play();
+      }
+      setIsMusicPlaying(!isMusicPlaying);
+    }
+  };
 
   const handleGameClick = (game: Game, event: React.MouseEvent<HTMLDivElement>) => {
     const card = event.currentTarget;
@@ -127,6 +153,14 @@ const Index = () => {
         }}
       />
       
+      <button
+        onClick={toggleMusic}
+        className="fixed top-6 right-6 z-50 w-16 h-16 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-orange-400 flex items-center justify-center transition-all comic-border shadow-2xl transform hover:scale-110 hover:rotate-12"
+        title={isMusicPlaying ? 'Выключить музыку' : 'Включить музыку'}
+      >
+        <Icon name={isMusicPlaying ? 'Volume2' : 'VolumeX'} size={32} className="text-white" />
+      </button>
+
       <div className="relative z-10">
         <header className="py-8 px-6 border-b-8 border-black bg-gradient-to-r from-orange-500 via-red-500 to-yellow-500 shadow-2xl">
           <div className="max-w-7xl mx-auto">
